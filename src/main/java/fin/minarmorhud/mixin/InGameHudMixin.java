@@ -4,7 +4,6 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.hud.InGameHud;
 import net.minecraft.client.render.RenderTickCounter;
-import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.ItemStack;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -69,17 +68,17 @@ public abstract class InGameHudMixin {
     private boolean tickArmor() {
         if (this.client.player.isCreative()) return false;
 
-        final boolean feet = tickArmorPiece(EquipmentSlot.FEET, 0);
-        final boolean legs = tickArmorPiece(EquipmentSlot.LEGS, 1);
-        final boolean chest = tickArmorPiece(EquipmentSlot.CHEST, 2);
-        final boolean head = tickArmorPiece(EquipmentSlot.HEAD, 3);
+        final boolean feet = tickArmorPiece(0);
+        final boolean legs = tickArmorPiece(1);
+        final boolean chest = tickArmorPiece(2);
+        final boolean head = tickArmorPiece(3);
 
         return feet || legs || chest || head;
     }
 
     @Unique
-    private boolean tickArmorPiece(EquipmentSlot equipmentSlot, int i) {
-        ItemStack armor = this.client.player.getEquippedStack(equipmentSlot);
+    private boolean tickArmorPiece(int i) {
+        ItemStack armor = this.client.player.getInventory().getArmorStack(i);
 
         int step = -1, color = -1;
         if (!armor.isEmpty()) {
